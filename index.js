@@ -110,7 +110,7 @@ const run = async () => {
     // });
     // price is between 30000 and 40000
 
-    // select some columns
+    // select some columns from model user
     // const result = await prisma.user.findMany({
     //   select: {
     //     id: true,
@@ -129,6 +129,112 @@ const run = async () => {
     //         id: true,
     //         name: true,
     //         price: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    // nested include
+    // const result = await prisma.user.findMany({
+    //   where: {
+    //     id: 2,
+    //   },
+    //   include: {
+    //     order: {
+    //       include: {
+    //         orderitem: {
+    //           include: {
+    //             product: {
+    //               include: {
+    //                 brand: true,
+    //               },
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+
+    // key select can not only select specific fields like id or username, it can also select a model
+    // key select CAN NOT be used with include at the same level like this
+    // const result = await prisma.brand.findMany({
+    //   where: {
+    //     id: 1,
+    //   },
+    //   select: {
+    //     product: true,
+    //   },
+    //   include: {
+    //     product: true,
+    //   },
+    // });
+    // PrismaClientValidationError: Please either use `include` or `select`, but not both at the same time.
+    // If you want to use key select and include, do like this:
+    // const result = await prisma.brand.findMany({
+    //   where: {
+    //     id: 1,
+    //   },
+    //   select: {
+    //     id: true,
+    //     name: true,
+    //     product: {
+    //       select: {
+    //         id: true,
+    //         name: true,
+    //         price: true,
+    //       },
+    //     },
+    //   },
+    // });
+    // This works, because product is a field in brand model
+    // for more info, see https://www.youtube.com/watch?v=IC4Ojs_-kD0&t=10498s at 2:59:00
+
+    // nested query / nested where
+    // const result = await prisma.brand.findFirst({
+    //   where: {
+    //     id: 1,
+    //   },
+    //   include: {
+    //     product: {
+    //       where: {
+    //         price: {
+    //           gt: 55000,
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+    // for more info, see https://www.youtube.com/watch?v=IC4Ojs_-kD0&t=10498s at 3:06:00
+
+    // const result = await prisma.product.findMany({
+    //   orderBy: {
+    //     price: "desc",
+    //   },
+    //   take: 5, // limit
+    //   skip: 10, // offset
+    // });
+
+    // const result = await prisma.user.aggregate({
+    //   _count: {
+    //     id: true,
+    //   },
+    //   where: {
+    //     role: {
+    //       not: "ADMIN",
+    //     },
+    //   },
+    // });
+
+    // const result = await prisma.product.groupBy({
+    //   by: "brandId",
+    //   _max: {
+    //     price: true,
+    //   },
+    //   having: {
+    //     price: {
+    //       _max: {
+    //         gt: 40000,
     //       },
     //     },
     //   },
